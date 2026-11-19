@@ -1,70 +1,103 @@
-# Ruang Kelas
+<div align="center">
 
-Aplikasi e-learning Laravel untuk admin dan siswa: pengelolaan course dan lesson, pengurutan lesson, upload video dengan progress, serta pemutaran video privat.
+# 🎓 Ruang Kelas
 
-## Requirement
+**Platform e-learning sederhana untuk mengelola course, lesson, dan video pembelajaran.**
 
-- PHP 8.2+ dengan ekstensi `pdo_mysql`, `fileinfo`, dan `mbstring`
+![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Demo-success?style=for-the-badge)
+
+</div>
+
+---
+
+## ✨ Fitur Utama
+
+| Untuk | Fitur |
+|---|---|
+| 👨‍🏫 **Admin** | Kelola course dan lesson, atur urutan lesson, terbitkan atau sembunyikan course |
+| 🎬 **Admin** | Upload video lesson dengan **progress bar** langsung di browser |
+| 🎒 **Siswa** | Lihat daftar course yang sudah terbit dan belajar lewat video |
+| 🔒 **Keamanan** | Video bersifat privat: hanya bisa diputar oleh pengguna yang sudah login dan hanya jika course diterbitkan |
+
+## 🧰 Teknologi
+
+| Teknologi | Peran |
+|---|---|
+| **Laravel 12 + PHP** | MVC, routing, autentikasi, validasi, dan penyimpanan file dalam satu framework |
+| **MySQL** | Data pengguna, role, course, lesson, dan status publikasi secara relasional |
+| **Blade** | Render halaman server-side tanpa framework frontend tambahan |
+| **CSS + JavaScript (XHR)** | Tampilan responsif dan progress upload tanpa dependensi tambahan |
+| **Private local storage** | Video demo disimpan di server dan dibatasi lewat autentikasi serta status publikasi |
+
+> 🎨 Mockup di folder `design/` adalah konsep awal. Implementasi akhir menyederhanakan beberapa elemen visual dan alur sesuai kebutuhan aplikasi.
+
+## 📋 Persyaratan
+
+- PHP **8.2+** dengan ekstensi `pdo_mysql`, `fileinfo`, dan `mbstring`
 - Composer
-- MySQL (Laragon direkomendasikan untuk pengembangan lokal)
+- MySQL (disarankan **Laragon** untuk pengembangan lokal)
 
-## Teknologi dan alasan
+## 🚀 Instalasi Cepat
 
-- **Laravel 12 dan PHP** — struktur MVC, routing, autentikasi, validasi, dan penyimpanan file tersedia dalam satu framework.
-- **MySQL** — menyimpan data pengguna, role, course, lesson, dan status publikasi secara relasional.
-- **Blade** — merender halaman server-side tanpa framework frontend tambahan.
-- **CSS dan JavaScript bawaan browser (XHR)** — tampilan responsif dan progress upload tanpa dependensi frontend tambahan.
-- **Private local storage** — menyimpan video demo di server dan membatasi pemutaran melalui autentikasi serta status publikasi.
+**1. Siapkan database**
+Jalankan MySQL di Laragon, lalu buat database bernama `elearning`.
 
-## Catatan desain
+**2. Install dependensi dan buat konfigurasi**
 
-Mockup pada folder `design/` merupakan konsep awal; implementasi akhir menyederhanakan beberapa elemen visual dan alur sesuai kebutuhan aplikasi.
+```powershell
+composer install
+Copy-Item .env.example .env
+php artisan key:generate
+```
 
-## Instalasi dan konfigurasi
+**3. Sesuaikan `.env`** (jika pengaturan Laragon-mu berbeda)
+Nilai awal memakai `127.0.0.1:3306`, database `elearning`, user `root`, tanpa password.
 
-1. Jalankan MySQL di Laragon dan buat database `elearning`.
-2. Dari folder proyek, jalankan:
+**4. Buat tabel dan akun demo**
 
-   ```powershell
-   composer install
-   Copy-Item .env.example .env
-   php artisan key:generate
-   ```
+```powershell
+php artisan migrate --seed
+```
 
-3. Sesuaikan koneksi database di `.env` bila pengaturan Laragon berbeda. Nilai awal pada template memakai `127.0.0.1:3306`, database `elearning`, dan user `root` tanpa password.
-4. Buat tabel dan akun demo:
-
-   ```powershell
-   php artisan migrate --seed
-   ```
-
-Jangan bagikan atau commit `.env`; berkas tersebut berisi konfigurasi lokal dan kunci aplikasi.
-
-## Menjalankan
+**5. Jalankan aplikasi**
 
 ```powershell
 php artisan serve
 ```
 
-Buka `http://127.0.0.1:8000`.
+Buka **http://127.0.0.1:8000** 🎉
 
-## Akun demo
+> ⚠️ Jangan bagikan atau commit file `.env`. Isinya konfigurasi lokal dan kunci aplikasi.
 
-- Admin: `admin@elearning.test` / `password`
-- Siswa: `student@elearning.test` / `password`
+## 🔑 Akun Demo
 
-Akun dibuat oleh seeder; aplikasi demo tidak menyediakan pendaftaran mandiri.
+| Role | Email | Password |
+|---|---|---|
+| 👨‍🏫 Admin | `admin@elearning.test` | `admin123` |
+| 🎒 Siswa | `student@elearning.test` | `password` |
 
-## Asumsi
+Akun dibuat oleh seeder. Aplikasi demo tidak menyediakan pendaftaran mandiri.
 
-- Hanya ada dua role: admin mengelola materi, siswa melihat course yang sudah diterbitkan.
-- Belum ada pendaftaran/enrolment per course; semua siswa yang login dapat melihat seluruh course terbit.
+## 📌 Asumsi
+
+- Hanya ada **dua role**: admin mengelola materi, siswa melihat course yang sudah terbit.
+- Belum ada enrolment per course, jadi semua siswa yang login dapat melihat seluruh course terbit.
 - Data contoh dan akun demo ditujukan untuk pengembangan lokal.
 
-## Batasan sistem
+## ⚙️ Batasan Sistem
 
-- Upload menerima MP4, WebM, MOV, dan MKV hingga 500 MB. Sesuaikan `upload_max_filesize` (minimal `512M`) dan `post_max_size` (misalnya `520M`) pada `php.ini` Laragon, lalu restart server web.
-- Upload dilakukan langsung ke satu server; file disimpan di private storage lokal. Tidak ada object storage, CDN, konversi video, atau pemrosesan antrean.
-- Status video sederhana: `uploading`, `ready`, atau `failed`. Tidak ada pemulihan otomatis untuk upload terputus.
-- Session login berlaku 8 jam. Reset password, pendaftaran siswa, enrolment, dan pelacakan progres belajar belum tersedia.
-- Sebelum digunakan di produksi, ganti akun demo, gunakan `APP_DEBUG=false`, HTTPS, serta konfigurasi penyimpanan dan server yang sesuai.
+- **Format upload:** MP4, WebM, MOV, dan MKV, maksimal **500 MB**. Atur `upload_max_filesize` (minimal `512M`) dan `post_max_size` (misalnya `520M`) di `php.ini` Laragon, lalu restart server web.
+- **Penyimpanan:** upload langsung ke satu server (private storage lokal). Belum ada object storage, CDN, konversi video, atau antrean.
+- **Status video:** `uploading`, `ready`, atau `failed`. Belum ada pemulihan otomatis untuk upload yang terputus.
+- **Sesi login:** berlaku 8 jam.
+- **Belum tersedia:** reset password, pendaftaran siswa, enrolment, dan pelacakan progres belajar.
+
+## 🛡️ Sebelum Dipakai di Produksi
+
+- [ ] Ganti semua password akun demo
+- [ ] Set `APP_DEBUG=false`
+- [ ] Gunakan HTTPS
+- [ ] Gunakan konfigurasi penyimpanan dan server yang sesuai kebutuhan
